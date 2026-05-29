@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelan Tempat Duduk Shafiq & Balqis - Hawa Banquet Hall</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF6F0; /* Soft warm elegant background */
+        }
+        .wedding-title {
+            font-family: 'Alex Brush', cursive;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+        /* Pulse Animation for Selected Table */
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+        }
+        .selected-table {
+            animation: pulse-gold 2s infinite;
+            border: 3px solid #d4af37 !important;
+            background-color: #fef9c3 !important;
+            color: #854d0e !important;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-amber-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl md:text-3xl font-semibold text-amber-700 wedding-title">Shafiq & Balqis</span>
+                <span class="hidden sm:inline-block text-xs uppercase tracking-widest text-amber-600 font-bold border-l border-amber-300 pl-2">30.05.2026</span>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="openQRModal()" class="flex items-center space-x-1 bg-amber-50 hover:bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200 text-xs md:text-sm transition">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>Kod QR Laman</span>
+                </button>
+                <button onclick="scrollToMap()" class="flex items-center space-x-1 bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm transition shadow-sm">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Lihat Peta Dewan</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="bg-gradient-to-b from-amber-50 to-transparent py-10 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="text-sm font-bold tracking-widest text-amber-600 uppercase mb-2 block">Walimatulurus</span>
+            <h1 class="text-5xl md:text-7xl text-amber-800 wedding-title my-2">Shafiq & Balqis</h1>
+            <p class="text-gray-600 mt-2 text-sm md:text-base font-medium">Sabtu, 30 Mei 2026 • Hawa Banquet Hall</p>
+            <div class="w-16 h-0.5 bg-amber-400 mx-auto my-4"></div>
+            <p class="text-gray-500 text-xs md:text-sm max-w-md mx-auto">Selamat datang ke majlis kami. Sila cari nama anda atau ahli keluarga anda di bawah untuk menyemak kedudukan meja makan yang disediakan di Hawa Banquet Hall.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: Search & Guest Information (5 cols on lg) -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Elegant Search Box Card -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-amber-100">
+                <h2 class="text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-amber-600"></i> Cari Nama Anda
+                </h2>
+                
+                <div class="relative">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Taip nama anda di sini... (Contoh: Yan, Johan, Oggy)" 
+                        class="w-full pl-11 pr-10 py-3 border-2 border-amber-100 rounded-xl focus:border-amber-400 focus:ring-0 outline-none transition text-base placeholder-gray-400">
+                    <span class="absolute left-4 top-3.5 text-gray-400">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <button id="clearBtn" onclick="clearSearch()" class="hidden absolute right-4 top-3.5 text-gray-400 hover:text-amber-600 transition">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+                
+                <!-- Quick suggestions helper -->
+                <p class="text-xs text-gray-400 mt-2">
+                    <span class="font-semibold text-amber-700">Tips:</span> Masukkan sebahagian nama (cth: "Siti", "Hajah", "Cikgu").
+                </p>
+
+                <!-- Search Results Container -->
+                <div id="searchResults" class="mt-4 space-y-2 max-h-64 overflow-y-auto hidden">
+                    <!-- Results dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Table Members Details Card (Shows when table selected) -->
+            <div id="tableDetailsCard" class="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden transition-all duration-300">
+                <div class="bg-gradient-to-r from-amber-700 to-amber-800 text-white p-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-amber-200 font-bold">Butiran Kedudukan</span>
+                            <h3 id="detailTableName" class="text-2xl font-bold mt-0.5">Sila Pilih Meja</h3>
+                        </div>
+                        <span id="detailTableIcon" class="bg-white/10 p-2.5 rounded-xl text-amber-100 text-xl">
+                            <i class="fa-solid fa-chair"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="text-xs font-semibold text-amber-700 uppercase tracking-wider mb-3">Senarai Tetamu Meja Ini:</p>
+                    <div id="detailTableGuests" class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+                        <!-- Guest names inserted here -->
+                        <span class="col-span-2 text-gray-400 italic text-center py-4">Sila cari nama atau klik meja pada peta di sebelah kanan untuk melihat ahli meja.</span>
+                    </div>
+                    
+                    <div id="mapGuideNote" class="mt-6 pt-4 border-t border-amber-50 text-xs text-amber-800 flex items-start gap-2 bg-amber-50/50 p-3 rounded-xl hidden">
+                        <i class="fa-solid fa-location-crosshairs text-amber-600 mt-0.5"></i>
+                        <span>Kedudukan meja ini telah ditandakan dengan <strong>bulatan kuning berkelip</strong> pada peta dewan di sebelah.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-amber-100">
+                <h3 class="text-xs font-bold uppercase text-amber-700 tracking-wider mb-3">Ringkasan Dewan</h3>
+                <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                    <div class="bg-amber-50/50 p-2.5 rounded-xl">
+                        <span class="block text-lg font-bold text-amber-800" id="totalTablesCount">38</span>
+                        <span class="text-gray-500">Jumlah Meja</span>
+                    </div>
+                    <div class="bg-amber-50/50 p-2.5 rounded-xl">
+                        <span class="block text-lg font-bold text-amber-800" id="totalGuestsCount">350+</span>
+                        <span class="text-gray-500">Tetamu Berdaftar</span>
+                    </div>
+                    <div class="bg-amber-50/50 p-2.5 rounded-xl">
+                        <span class="block text-lg font-bold text-amber-800">VIP</span>
+                        <span class="text-gray-500">Meja Beradap & Akad</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Floor Plan Map (7 cols on lg) -->
+        <div class="lg:col-span-7" id="mapSection">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-amber-100 flex flex-col h-full">
+                
+                <!-- Floor Plan Map Header -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-amber-600"></i> Pelan & Peta Hawa Banquet Hall
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Susun atur pelan meja dari Pintu Masuk Utama (Main Entrance).</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500"></span> Karpet Merah</span>
+                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Meja Biasa</span>
+                        <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600"></span> VIP/Khas</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Floor Plan Visualization -->
+                <div class="border border-amber-100 rounded-xl bg-amber-50/20 p-4 overflow-x-auto">
+                    <!-- Outer Container with minimum width to ensure layout safety on tiny mobile screens -->
+                    <div class="min-w-[650px] relative text-xs">
+                        
+                        <!-- STAGE / VIP AREA at the Top -->
+                        <div class="grid grid-cols-12 gap-2 mb-4 items-center">
+                            <!-- Stage Box -->
+                            <div class="col-span-3"></div>
+                            <div class="col-span-6 bg-amber-900/90 text-amber-100 font-bold py-3 text-center rounded-lg shadow-sm tracking-widest uppercase">
+                                <i class="fa-solid fa-holly-berry mr-1"></i> Pentas (Stage) <i class="fa-solid fa-holly-berry ml-1"></i>
+                            </div>
+                            <div class="col-span-3"></div>
+                        </div>
+
+                        <!-- Top row tables: 23, Meja Beradap, 4, 5, 24 -->
+                        <div class="grid grid-cols-10 gap-2 mb-6 items-center">
+                            <!-- Table 23 (Left Wing near stage) -->
+                            <div class="col-span-2 flex justify-center">
+                                <button onclick="selectTable(23)" id="table-btn-23" class="w-14 h-14 rounded-full border-2 border-amber-300 bg-white hover:bg-amber-100 flex flex-col justify-center items-center shadow-sm font-semibold transition">
+                                    <span class="text-[10px] text-gray-500">Meja</span>
+                                    <span class="text-sm">23</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Anchor/Beradap/Akad Centre Area (VIP) -->
+                            <div class="col-span-6 bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-xl p-3 flex justify-around items-center">
+                                <button onclick="selectSpecialTable('Meja Beradap')" id="table-btn-beradap" class="px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 font-bold shadow-sm text-[11px] transition text-center">
+                                    Meja Beradap
+                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="selectTable(4)" id="table-btn-4" class="w-11 h-11 rounded-full border-2 border-indigo-400 bg-white hover:bg-indigo-50 flex flex-col justify-center items-center font-bold text-indigo-700 transition">
+                                        <span class="text-[8px] font-normal">M</span>4
+                                    </button>
+                                    <button onclick="selectTable(5)" id="table-btn-5" class="w-11 h-11 rounded-full border-2 border-indigo-400 bg-white hover:bg-indigo-50 flex flex-col justify-center items-center font-bold text-indigo-700 transition">
+                                        <span class="text-[8px] font-normal">M</span>5
+                                    </button>
+                                </div>
+                                <button onclick="selectSpecialTable('Meja Akad')" id="table-btn-akad" class="px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 font-bold shadow-sm text-[11px] transition text-center">
+                                    Meja Akad
+                                </button>
+                            </div>
+
+                            <!-- Table 24 (Right Wing near stage) -->
+                            <div class="col-span-2 flex justify-center">
+                                <button onclick="selectTable(24)" id="table-btn-24" class="w-14 h-14 rounded-full border-2 border-amber-300 bg-white hover:bg-amber-100 flex flex-col justify-center items-center shadow-sm font-semibold transition">
+                                    <span class="text-[10px] text-gray-500">Meja</span>
+                                    <span class="text-sm">24</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Main Hall Corridor with Red Carpet down the center -->
+                        <div class="relative bg-white/60 rounded-xl border border-amber-100/50 p-3 mb-4">
+                            
+                            <!-- Glass Wall Indicators -->
+                            <div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-sky-200 rounded-r" title="Dinding Kaca"></div>
+                            <div class="absolute right-0 top-1/4 bottom-1/4 w-1 bg-sky-200 rounded-l" title="Dinding Kaca"></div>
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 text-[9px] text-sky-400 font-semibold tracking-wider">DINDING KACA</span>
+                            <span class="absolute right-2 top-1/2 -translate-y-1/2 rotate-90 text-[9px] text-sky-400 font-semibold tracking-wider">DINDING KACA</span>
+
+                            <!-- Red Carpet representation in background -->
+                            <div class="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-14 bg-red-600/95 flex items-center justify-center pointer-events-none rounded">
+                                <span class="text-white text-[8px] font-bold tracking-widest uppercase rotate-90 whitespace-nowrap">Red Carpet</span>
+                            </div>
+
+                            <!-- Left Side Tables vs Right Side Tables Grid -->
+                            <div class="grid grid-cols-2 gap-16 py-2 relative z-10">
+                                
+                                <!-- LEFT HAND SIDE TABLES (Tables 1-22 context, and 25) -->
+                                <div class="space-y-4">
+                                    <!-- Row: 25 & 12 (Top Left) -->
+                                    <div class="flex justify-around">
+                                        <button onclick="selectTable(25)" id="table-btn-25" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">25</span>
+                                        </button>
+                                        <button onclick="selectTable(12)" id="table-btn-12" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">12</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Row: 7 & 8 -->
+                                    <div class="flex justify-around">
+                                        <button onclick="selectTable(7)" id="table-btn-7" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">7</span>
+                                        </button>
+                                        <button onclick="selectTable(8)" id="table-btn-8" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">8</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Row: 11 & 12 (adjacent) & 13 & 14 -->
+                                    <div class="grid grid-cols-4 gap-1">
+                                        <button onclick="selectTable(11)" id="table-btn-11" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">11</span>
+                                        </button>
+                                        <button onclick="selectTable(1)" id="table-btn-1" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">1</span>
+                                        </button>
+                                        <button onclick="selectTable(13)" id="table-btn-13" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">13</span>
+                                        </button>
+                                        <button onclick="selectTable(14)" id="table-btn-14" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">14</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Rows 15 to 22 block arrangement -->
+                                    <div class="grid grid-cols-4 gap-1 pt-1">
+                                        <button onclick="selectTable(15)" id="table-btn-15" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">15</span>
+                                        </button>
+                                        <button onclick="selectTable(16)" id="table-btn-16" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">16</span>
+                                        </button>
+                                        <button onclick="selectTable(17)" id="table-btn-17" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">17</span>
+                                        </button>
+                                        <button onclick="selectTable(18)" id="table-btn-18" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">18</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="grid grid-cols-4 gap-1">
+                                        <button onclick="selectTable(19)" id="table-btn-19" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">19</span>
+                                        </button>
+                                        <button onclick="selectTable(20)" id="table-btn-20" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">20</span>
+                                        </button>
+                                        <button onclick="selectTable(21)" id="table-btn-21" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">21</span>
+                                        </button>
+                                        <button onclick="selectTable(22)" id="table-btn-22" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">22</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 gap-1 pt-2">
+                                        <button onclick="selectTable(2)" id="table-btn-2" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">2</span>
+                                        </button>
+                                        <button onclick="selectTable(3)" id="table-btn-3" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">3</span>
+                                        </button>
+                                        <button onclick="selectTable(6)" id="table-btn-6" class="w-10 h-10 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">6</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- RIGHT HAND SIDE TABLES (Tables 26-30 context) -->
+                                <div class="space-y-4 flex flex-col justify-start">
+                                    <!-- Row: 26 & 27 -->
+                                    <div class="flex justify-around">
+                                        <button onclick="selectTable(26)" id="table-btn-26" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">26</span>
+                                        </button>
+                                        <button onclick="selectTable(27)" id="table-btn-27" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">27</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Row: 28 -->
+                                    <div class="flex justify-center">
+                                        <button onclick="selectTable(28)" id="table-btn-28" class="w-14 h-14 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">28</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Row: 29 & 30 -->
+                                    <div class="flex justify-around">
+                                        <button onclick="selectTable(29)" id="table-btn-29" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">29</span>
+                                        </button>
+                                        <button onclick="selectTable(30)" id="table-btn-30" class="w-12 h-12 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">Meja</span><span class="font-bold">30</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Table 9 & 10 at Right Side bottom -->
+                                    <div class="flex justify-around pt-4">
+                                        <button onclick="selectTable(9)" id="table-btn-9" class="w-11 h-11 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">M</span><span class="font-bold text-xs">9</span>
+                                        </button>
+                                        <button onclick="selectTable(10)" id="table-btn-10" class="w-11 h-11 rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                            <span class="text-[8px] text-gray-500">M</span><span class="font-bold text-xs">10</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Divider indicating transition to MINI HALL / FOYER -->
+                        <div class="text-center py-1.5 bg-amber-100/60 rounded-lg text-[10px] font-bold text-amber-700 tracking-widest uppercase mb-4">
+                            Kawasan Mini Hall
+                        </div>
+
+                        <!-- Mini Hall Layout (Tables 31 to 38 + stations) -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-amber-50/40 p-3 rounded-xl border border-dashed border-amber-200">
+                            
+                            <!-- Left Station / Register -->
+                            <div class="col-span-3 space-y-4">
+                                <div class="bg-amber-100 text-amber-800 p-2 rounded border border-amber-200 text-center text-[10px] font-semibold">
+                                    Mee Hoon Sup Station
+                                </div>
+                                <div class="bg-amber-800 text-amber-50 p-2 rounded text-center text-[10px] font-bold">
+                                    KAUNTER DAFTAR<br>(REGISTER TABLE)
+                                </div>
+                            </div>
+
+                            <!-- Center Tables 31 to 38 Grid -->
+                            <div class="col-span-6 grid grid-cols-4 gap-2">
+                                <button onclick="selectTable(31)" id="table-btn-31" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">31</span>
+                                </button>
+                                <button onclick="selectTable(33)" id="table-btn-33" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">33</span>
+                                </button>
+                                <button onclick="selectTable(35)" id="table-btn-35" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">35</span>
+                                </button>
+                                <button onclick="selectTable(37)" id="table-btn-37" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">37</span>
+                                </button>
+                                
+                                <button onclick="selectTable(32)" id="table-btn-32" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">32</span>
+                                </button>
+                                <button onclick="selectTable(34)" id="table-btn-34" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">34</span>
+                                </button>
+                                <button onclick="selectTable(36)" id="table-btn-36" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">36</span>
+                                </button>
+                                <button onclick="selectTable(38)" id="table-btn-38" class="w-11 h-11 mx-auto rounded-full border border-amber-300 bg-white hover:bg-amber-50 flex flex-col justify-center items-center shadow-xs transition">
+                                    <span class="text-[7px] text-gray-500">M</span><span class="font-bold text-xs">38</span>
+                                </button>
+                            </div>
+
+                            <!-- Right Station / Sound & Entrance -->
+                            <div class="col-span-3 space-y-4">
+                                <div class="bg-gray-100 text-gray-700 p-2 rounded border border-gray-200 text-center text-[10px] font-semibold">
+                                    PA SYSTEM
+                                </div>
+                                <div class="bg-emerald-600 text-white p-2.5 rounded text-center text-[10px] font-bold tracking-wider shadow-xs uppercase">
+                                    PINTU MASUK UTAMA<br>(MAIN ENTRANCE)
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-xs text-gray-500 text-center italic">
+                    * Klik pada mana-mana bulatan meja di atas untuk melihat senarai tetamu meja tersebut secara langsung.
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- QR Code Modal (for easy screen-sharing & saving) -->
+    <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-amber-100 transition-transform transform scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm font-bold text-amber-900 uppercase tracking-widest">Akses Mudah Alih</span>
+                <button onclick="closeQRModal()" class="text-gray-400 hover:text-red-500 text-xl transition">&times;</button>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-amber-800 wedding-title mb-1">Shafiq & Balqis</h3>
+            <p class="text-xs text-gray-500 mb-6">Imbas kod QR di bawah menggunakan telefon pintar tetamu untuk membuka laman mencari kedudukan meja ini.</p>
+            
+            <!-- QR Placeholder generated by JS -->
+            <div id="qrcode" class="mx-auto flex justify-center mb-6 p-4 bg-amber-50/50 rounded-2xl w-fit border border-amber-100"></div>
+            
+            <button onclick="closeQRModal()" class="w-full bg-amber-800 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-amber-900 transition">
+                Tutup Paparan
+            </button>
+        </div>
+    </div>
+
+    <!-- Data Store -->
+    <script>
+        // Full seat list parsed from document
+        const seatingData = {
+            1: ["KAK YAN", "BANG LIN", "YAK JIMOL", "MAK YAH", "PAK AMIT", "UDAK SORI", "NGAH SEAH", "MOK BIBOT", "MOK KIOT", "MOK SEBERAN"],
+            2: ["BANG JIRUN", "HOSSEN SEDI", "KAMISA", "NUHA HUSNA", "M. HAZIM", "M. HASIF", "BRAHIM", "MARLINAH", "AINUL", "AHMAD BAIHAQI"],
+            3: ["KAK NORA 1", "KAK NORA 2", "KAK NORA 3", "KAK NORA 4", "PN. KARTINA", "EN. APENDI", "ADIK HAMDAN", "MAK SHAFIQ", "BAPA SHAFIQ", "MASHITAH"],
+            4: ["ENCIK HAFIZ 1", "ENCIK HAFIZ 2", "ENCIK HAFIZ 3", "ENCIK HAFIZ 4", "KAK ADHA", "SUAMI KAK ADHA", "HABIBBULLAH", "EN. RANO", "DRIVER RANO", "RAHIMAH"],
+            5: ["PN. EDA", "SUAMI PN. EDA", "PN. MILAH", "CIK AISYAH", "EN. EDDY", "ADEK UMMU", "ADEK EE", "NEK MIAH", "WA BANUN", "NEK EDI", "ADEK RAYYAN", "NEK RAY"],
+            6: ["EN. JOHAN 1", "EN. JOHAN 2", "EN. JOHAN 3", "EN. JOHAN 4", "EN. BUDIN", "PN. YUSNI", "SUAMI PN. YUSNI", "BAHIYYAH"],
+            7: ["EPI", "ANAK EPI", "LAKI EPI", "HALIMAH", "CIKGU ZAIDI", "BANG MUSA", "HAJAH SALUS", "BANG AMBI", "KAK SURAYA", "CIKGU SHAHRIL", "ISTERI CG SHAHRIL"],
+            8: ["KAK SURAYA", "BANG JALI", "BANG AZIZ", "KAK TIMAH", "KAK SUE", "PUTERI"],
+            9: ["PN. NORALINA", "SUAMI PN. NORALINA", "PN. MIDAH", "ADEK ANAZ", "ADEK AYYASH", "PN. AZREEN", "SUAMI PN. AZREEN", "MAK AIN", "KAKAK AIN", "SAUDARA AIN", "SAUDARA AIN", "SAUDARA AIN"],
+            10: ["PN. ZAINAB", "SUAMI PN. ZAINAB", "PN. SHIELA 1", "PN. SHIELA 2", "PN. SHIELA 3", "EN. EDI", "ISTERI EN. EDI", "PN. NOR", "SUAMI PN. NOR", "CUCU NGAH NOR"],
+            11: ["AZIE", "AZLAN", "ADAM", "DIBA", "BANG BAD", "KAK WATIE", "YANA", "BANG IS", "KAK YATI", "ANAK BANG IS"],
+            12: ["HAJAH JENAH", "HAJI MAN", "SALMAH", "SEBLI", "KAK HAMIDAH", "BANG ZAINOREN", "ANJANG SAADIAH", "BANG ALON", "KAK DURI"],
+            13: ["PN. OGGY 1", "PN. OGGY 2", "PN. OGGY 3", "PN. OGGY 4", "PN. OGGY 5", "UMMI INTAN NAZIRAH 1", "UMMI INTAN NAZIRAH 2", "SABARIAH", "BADOI", "KEYOK"],
+            14: ["USU IDA 1", "USU IDA 2", "USU IDA 3", "USU IDA 4", "USU IDA 5", "USU IDA 6", "USU IDA 7", "USU IDA 8", "PN. HIDAYAH", "SUAMI PN. HIDAYAH"],
+            15: ["SEMA", "ANAK SEMA", "LINA", "LAKI LINA", "MAHANI", "LAKI MAHANI", "MUAZ", "BINI MUAZ", "HAJAH DEROT", "ANAK HAJAH DEROT"],
+            16: ["KAYOT", "LAKI KAYOT", "HAJI BUANG", "HAJAH PUTIT", "HAJI DOLHAN", "HAJAH BAIDAH", "RABAIE", "RIKI + ANAK", "BINI RIKI", "KAK MAK YAH"],
+            17: ["PN. NOR 1", "PN. NOR 2", "PN. NOR 3", "PN. NOR 4", "PN. TUYAH", "NEK ITI", "NEK USU PIAH", "ADEK ZYTA", "WANIE"],
+            18: ["PN. JIJAH", "SUAMI PN. JIJAH", "NEK SAH", "PN. KIAH", "SUAMI PN. KIAH", "ADEK KILAH", "DARJAT", "PN. JIHAN", "SUAMI PN. JIHAN", "BELLA"],
+            19: ["DR. MASSHARA 1", "DR. MASSHARA 2", "ADRIANA", "EN. MUDHI 1", "EN. MUDHI 2", "EN. MUDHI 3", "EN. MUDHI 4", "EN. MUDHI 5", "EN. REMI", "ISTERI EN. REMI"],
+            20: ["PN. ROHAYAH 1", "PN. ROHAYAH 2", "PN. ROHAYAH 3", "PN. ROHAYAH 4", "PN. ROHAYAH 5", "PN. ROHAYAH 6", "PN. ROHAYAH 7", "PN. ROHAYAH 8", "PN. ROHAYAH 9", "PN. ROHAYAH 10"],
+            21: ["IBUK LIJA", "SUAMI IBUK", "EFFA", "MAI", "UDAK LIKOT", "MOHAN 1", "MOHAN 2", "MOHAN 3", "MOHAN 4"],
+            22: ["EN. RAPI BIN DELI", "EN. AISAMUDIN SEM 1", "EN. AISAMUDIN SEM 2", "EN. AISAMUDIN SEM 3", "PN. FIZA NASIB", "PN. EMMA 1", "PN. EMMA 2", "PN. EMMA 3"],
+            23: ["GENG ZIKIR 1", "GENG ZIKIR 2", "GENG ZIKIR 3", "GENG ZIKIR 4", "GENG ZIKIR 5", "GENG ZIKIR 6", "GENG ZIKIR 7", "GENG ZIKIR 8", "GENG ZIKIR 9", "GENG ZIKIR 10"],
+            24: ["GENG ZIKIR 11", "GENG ZIKIR 12", "GENG ZIKIR 13", "GENG ZIKIR 14", "GENG ZIKIR 15", "BOLIA", "SUKIMAN", "BINI SUKIMAN", "CIKGU ALIMIN", "ISTERI CG ALIMIN"],
+            25: ["USTAZAH RAHA", "LAKI USTAZAH RAHA", "GURU WAHEDA", "LAKI GURU WAHEDA", "HAJAH LEHOT", "HALIMATUL", "GURU KADARIAH", "HAJI PADIL", "SALBIAH", "SALBIAH NASIR"],
+            26: ["NORSAH", "JEDIL", "FATIMAH", "ARBI", "SITI HAWA", "LAKI SITI HAWA", "KAMARIAH", "ROSNAH", "TIMAH", "SORAYA"],
+            27: ["HAJAH ARA", "GURU NGAJI", "EMMA", "CIKGU ZAHARA", "USTAZAH SURAYA", "GURU NAFISAH", "USUP", "BINI USUP", "CIKGU RAIS", "BINI CIKGU RAIS"],
+            28: ["BANG MUSAI", "BINI BANG MUSAI", "ANAK BANG MUSAI 1", "ANAK BANG MUSAI 2", "KAK SARIAH", "BANG MIJI", "BINI BANG MIJI", "MILA + BABY", "EPI", "IJAN"],
+            29: ["KAK UMIK", "BANG SURA", "KAK SHIDAH", "BANG ZUL", "DEMO", "ANAK DEMO 1", "ANAK DEMO 2", "JAMEL", "SHAIDI", "SUDIRMAN"],
+            30: ["KAWAN BG LIN 1", "KAWAN BG LIN 2", "KAWAN BG LIN 3", "KAWAN BG LIN 4", "UMANG", "ANAK SHAIDI 1", "ANAK SHAIDI 2", "KAWAN KAK YAN 1", "KAWAN KAK YAN 2", "KAWAN KAK YAN 3"],
+            31: ["JAMAL", "SALBIAH", "MAK JAI", "CIKGU INAI", "BINI CIKGU INAI", "ANAK CIKGU INAI 1", "ANAK CIKGU INAI 2", "KAK HAS", "BANG NORDEN"],
+            32: ["KAK NANA", "BAG PIAN", "BANG JULAIHI", "KAK EMA", "BANG POJI", "BINI BANG POJI", "KAK LYN", "LAKI KAK LYN", "AJIM", "BINI AJIM"],
+            33: ["CIKGU KHAIROOL", "CIKGU FAIZ FAIZ", "CIKGU HAFFIZ", "CIKGU KEVITHERRIE", "CIKGU MORIN", "CIKGU AIMUNI", "ARFIQ", "NORMALAWATI", "ANAK NORMALA 1", "ANAK NORMALA 2"],
+            34: ["ALFI + KEYSHA", "KHATY", "BEAN", "SYILA", "PAPAP", "FATIN", "HARUN", "BIANCA", "NINA", "MOZEK"],
+            35: ["MUSLAINI 1", "MUSLAINI 2", "FADZLY", "DAYANG AMANI 1", "DAYANG AMANI 2", "FILLY 1", "FILLY 2", "BOAN 1", "BOAN 2"],
+            36: ["WAN MOHAMAD", "HERMAN", "BINI HERMAN", "ANAK HERMAN", "MIJI", "YUSRY", "NIK", "AMY", "EASTER"],
+            37: ["SAROL", "BINI SAROL", "ANAK SAROL 1", "ANAK SAROL 2", "ANAK SAROL 3", "KAK SAMSI", "SEMAN", "BINI SEMAN", "BANG JONI", "BINI BANG JONI"],
+            38: ["KAK EDA", "LAKI KAK EDA", "BOIE", "BINI BOIE", "KAK LEHOT", "NORMAH", "TIMAH TONET", "ANAK TIMAH", "SENI", "ANAK SENI"]
+        };
+
+        const specialTables = {
+            "Meja Beradap": ["Pengantin Shafiq & Balqis", "Ahli Keluarga Terdekat VIP 1", "Ahli Keluarga Terdekat VIP 2", "Ahli Keluarga Terdekat VIP 3"],
+            "Meja Akad": ["Tok Kadi", "Saksi-Saksi Akad", "Shafiq", "Wali Balqis"]
+        };
+
+        let activeSelectedTableId = null;
+
+        // Populate total guest stats
+        function computeStats() {
+            let total = 0;
+            Object.values(seatingData).forEach(arr => total += arr.length);
+            document.getElementById("totalGuestsCount").innerText = total + "+";
+        }
+
+        // Real-time Search Handler
+        function handleSearch() {
+            const query = document.getElementById("searchInput").value.trim().toUpperCase();
+            const resultsDiv = document.getElementById("searchResults");
+            const clearBtn = document.getElementById("clearBtn");
+
+            if (!query) {
+                resultsDiv.classList.add("hidden");
+                clearBtn.classList.add("hidden");
+                return;
+            }
+
+            clearBtn.classList.remove("hidden");
+            resultsDiv.innerHTML = "";
+            let matchCount = 0;
+
+            // Search normal tables
+            for (const [tableId, guests] of Object.entries(seatingData)) {
+                guests.forEach(guest => {
+                    if (guest.toUpperCase().includes(query)) {
+                        matchCount++;
+                        createResultRow(guest, `Meja ${tableId}`, () => selectTable(parseInt(tableId), guest));
+                    }
+                });
+            }
+
+            // Search special tables
+            for (const [specialName, guests] of Object.entries(specialTables)) {
+                guests.forEach(guest => {
+                    if (guest.toUpperCase().includes(query)) {
+                        matchCount++;
+                        createResultRow(guest, specialName, () => selectSpecialTable(specialName, guest));
+                    }
+                });
+            }
+
+            if (matchCount > 0) {
+                resultsDiv.classList.remove("hidden");
+            } else {
+                resultsDiv.innerHTML = `<div class="p-4 text-center text-gray-400 text-sm">Tiada nama sepadan ditemui. Sila cuba lagi.</div>`;
+                resultsDiv.classList.remove("hidden");
+            }
+        }
+
+        function createResultRow(name, label, clickHandler) {
+            const MathchResultsDiv = document.getElementById("searchResults");
+            const item = document.createElement("div");
+            item.className = "flex justify-between items-center bg-amber-50 hover:bg-amber-100 p-3 rounded-xl cursor-pointer border border-amber-100 transition shadow-xs";
+            item.onclick = clickHandler;
+            item.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                    <span class="font-semibold text-gray-800 text-sm">${name}</span>
+                </div>
+                <span class="bg-amber-700 text-white font-bold text-xs px-2.5 py-1 rounded-lg">${label}</span>
+            `;
+            MathchResultsDiv.appendChild(item);
+        }
+
+        function clearSearch() {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("searchResults").classList.add("hidden");
+            document.getElementById("clearBtn").classList.add("hidden");
+        }
+
+        // Highlight and Select table
+        function selectTable(tableId, highlightGuestName = null) {
+            // Remove previous active classes
+            if (activeSelectedTableId) {
+                const prevBtn = document.getElementById(`table-btn-${activeSelectedTableId}`);
+                if (prevBtn) prevBtn.classList.remove("selected-table");
+            }
+            const beradapBtn = document.getElementById("table-btn-beradap");
+            const akadBtn = document.getElementById("table-btn-akad");
+            if (beradapBtn) beradapBtn.classList.remove("selected-table");
+            if (akadBtn) akadBtn.classList.remove("selected-table");
+
+            // Apply select styles to new active button
+            const activeBtn = document.getElementById(`table-btn-${tableId}`);
+            if (activeBtn) {
+                activeBtn.classList.add("selected-table");
+                activeSelectedTableId = tableId;
+            }
+
+            // Update Details Card
+            document.getElementById("detailTableName").innerText = `Meja ${tableId}`;
+            document.getElementById("detailTableIcon").innerHTML = `<i class="fa-solid fa-chair"></i>`;
+            
+            const guestsList = seatingData[tableId] || [];
+            const guestsContainer = document.getElementById("detailTableGuests");
+            guestsContainer.innerHTML = "";
+
+            guestsList.forEach(guest => {
+                const guestSpan = document.createElement("div");
+                const isHighlight = highlightGuestName && guest.toUpperCase() === highlightGuestName.toUpperCase();
+                guestSpan.className = `p-2.5 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition ${
+                    isHighlight 
+                        ? 'bg-amber-600 text-white border-amber-700 font-bold scale-105 shadow-md' 
+                        : 'bg-white text-gray-700 border-amber-100 hover:border-amber-200'
+                }`;
+                guestSpan.innerHTML = `
+                    <i class="fa-solid ${isHighlight ? 'fa-star text-yellow-300' : 'fa-circle-user text-amber-400'} text-xs"></i>
+                    <span>${guest}</span>
+                `;
+                guestsContainer.appendChild(guestSpan);
+            });
+
+            // Show guides and scroll
+            document.getElementById("mapGuideNote").classList.remove("hidden");
+            scrollToDetails();
+            document.getElementById("searchResults").classList.add("hidden"); // close search results to focus on map
+        }
+
+        function selectSpecialTable(specialName, highlightGuestName = null) {
+            // Remove previous active classes
+            if (activeSelectedTableId) {
+                const prevBtn = document.getElementById(`table-btn-${activeSelectedTableId}`);
+                if (prevBtn) prevBtn.classList.remove("selected-table");
+            }
+            
+            const beradapBtn = document.getElementById("table-btn-beradap");
+            const akadBtn = document.getElementById("table-btn-akad");
+            
+            if (beradapBtn) beradapBtn.classList.remove("selected-table");
+            if (akadBtn) akadBtn.classList.remove("selected-table");
+
+            if (specialName === "Meja Beradap" && beradapBtn) {
+                beradapBtn.classList.add("selected-table");
+                activeSelectedTableId = "beradap";
+            } else if (specialName === "Meja Akad" && akadBtn) {
+                akadBtn.classList.add("selected-table");
+                activeSelectedTableId = "akad";
+            }
+
+            // Update Details
+            document.getElementById("detailTableName").innerText = specialName;
+            document.getElementById("detailTableIcon").innerHTML = `<i class="fa-solid fa-crown"></i>`;
+            
+            const guestsList = specialTables[specialName] || [];
+            const guestsContainer = document.getElementById("detailTableGuests");
+            guestsContainer.innerHTML = "";
+
+            guestsList.forEach(guest => {
+                const guestSpan = document.createElement("div");
+                const isHighlight = highlightGuestName && guest.toUpperCase() === highlightGuestName.toUpperCase();
+                guestSpan.className = `p-2.5 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition ${
+                    isHighlight 
+                        ? 'bg-indigo-600 text-white border-indigo-700 font-bold scale-105 shadow-md' 
+                        : 'bg-white text-gray-700 border-amber-100'
+                }`;
+                guestSpan.innerHTML = `
+                    <i class="fa-solid ${isHighlight ? 'fa-crown text-yellow-300' : 'fa-gem text-indigo-400'} text-xs"></i>
+                    <span>${guest}</span>
+                `;
+                guestsContainer.appendChild(guestSpan);
+            });
+
+            document.getElementById("mapGuideNote").classList.remove("hidden");
+            scrollToDetails();
+            document.getElementById("searchResults").classList.add("hidden");
+        }
+
+        // Navigation helpers
+        function scrollToMap() {
+            document.getElementById("mapSection").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToDetails() {
+            document.getElementById("tableDetailsCard").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // QR Code Modal
+        function openQRModal() {
+            const modal = document.getElementById("qrModal");
+            modal.classList.remove("hidden");
+            
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; // Clear old QR
+
+            // Generate QR code pointing to current location URL
+            new QRCode(qrContainer, {
+                text: window.location.href,
+                width: 180,
+                height: 180,
+                colorDark : "#78350f", // Amber 900
+                colorLight : "#FAF6F0",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        function closeQRModal() {
+            document.getElementById("qrModal").classList.add("hidden");
+        }
+
+        // Page setup on load
+        window.onload = function() {
+            computeStats();
+        };
+    </script>
+</body>
+</html>
